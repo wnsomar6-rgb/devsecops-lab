@@ -33,23 +33,23 @@ jobs:
           pytest -q
 
   security-sast:
-  runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-  permissions:
-    contents: read
-    security-events: write
+    permissions:
+      contents: read
+      security-events: write
 
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: python
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
 
   docker-build:
     runs-on: ubuntu-latest
@@ -58,9 +58,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image
         run: |
