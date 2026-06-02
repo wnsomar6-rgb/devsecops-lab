@@ -33,19 +33,23 @@ jobs:
           pytest -q
 
   security-sast:
-    runs-on: ubuntu-latest
+  runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  permissions:
+    contents: read
+    security-events: write
 
-      - name: Run CodeQL Init
-        uses: github/codeql-action/init@v3
-        with:
-          languages: python
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Analyze CodeQL
-        uses: github/codeql-action/analyze@v3
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: python
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
 
   docker-build:
     runs-on: ubuntu-latest
