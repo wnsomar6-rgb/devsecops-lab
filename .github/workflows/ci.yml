@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: ["main"]
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
 
   test:
@@ -44,7 +48,6 @@ jobs:
         uses: github/codeql-action/analyze@v3
 
   docker-build:
-
     runs-on: ubuntu-latest
     needs: test
 
@@ -60,7 +63,6 @@ jobs:
           docker build -t devsecops-lab:latest -f docker/Dockerfile .
 
   container-security:
-
     runs-on: ubuntu-latest
     needs: docker-build
 
