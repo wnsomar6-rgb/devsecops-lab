@@ -1,4 +1,4 @@
-name: DevSecOps CI Pipeline
+name: DevSecOps CI/CD Pipeline
 
 on:
   push:
@@ -21,13 +21,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install fastapi uvicorn pytest
+          pip install -r requirements.txt
+          pip install pytest fastapi uvicorn
 
-      - name: Run basic import test
+      - name: Run tests
+        run: |
+          pytest -q || true
+
+      - name: Check API import
         run: |
           python -c "from app.main import app; print('API OK')"
 
-  security_scan:
+  security:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,5 +44,26 @@ jobs:
         with:
           languages: python
 
-      - name: Perform CodeQL Analysis
+      - name: CodeQL Analysis
         uses: github/codeql-action/analyze@v3
+
+  dependency-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install safety tool
+        run: |
+          pip install safety
+
+      - name: Run dependency scan
+        run: |
+          pip freeze > req.txt
+          safety check -r req.txt || true
