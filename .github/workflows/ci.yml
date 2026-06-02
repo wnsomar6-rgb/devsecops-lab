@@ -73,7 +73,7 @@ jobs:
           docker build -t devsecops-lab:scan -f docker/Dockerfile .
 
       - name: Run Trivy scan
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@v0.24.0
         with:
           image-ref: devsecops-lab:scan
           format: table
