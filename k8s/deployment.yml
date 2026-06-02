@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devsecops-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devsecops-api
+  template:
+    metadata:
+      labels:
+        app: devsecops-api
+    spec:
+      containers:
+        - name: api
+          image: devsecops-lab:latest
+          ports:
+            - containerPort: 8000
