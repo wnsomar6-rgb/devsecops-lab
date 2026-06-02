@@ -5,34 +5,35 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Route de santé (obligatoire en entreprise)
+# HEALTHCHECK (obligatoire en production)
 @app.get("/health")
-def health_check():
+def health():
     return {
-        "status": "OK",
-        "message": "API is running"
+        "status": "UP",
+        "service": "devsecops-api"
     }
 
-# Route principale
+# ROOT
 @app.get("/")
 def root():
     return {
-        "message": "Welcome to DevSecOps Lab API"
+        "message": "DevSecOps API running"
     }
 
-# Exemple de vraie API (mini feature métier)
-tasks = []
+# FAKE DATABASE (simple pour demo)
+TASKS = []
 
 @app.post("/tasks")
 def create_task(task: str):
-    tasks.append(task)
+    TASKS.append(task)
     return {
-        "message": "Task created",
+        "status": "created",
         "task": task
     }
 
 @app.get("/tasks")
 def get_tasks():
     return {
-        "tasks": tasks
+        "count": len(TASKS),
+        "tasks": TASKS
     }
